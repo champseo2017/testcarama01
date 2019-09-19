@@ -1,35 +1,30 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Webcam from "react-webcam";
+import { Camera } from './lib';
+
+function capture(imgSrc) {
+  console.log(imgSrc);
+}
 
 function App() {
-  const videoConstraints = {
-    width: 1280,
-    height: 720,
-    facingMode: "user"
-  };
-  const webcamRef = React.useRef(null);
- 
-  const capture = React.useCallback(
-    () => {
-      const imageSrc = webcamRef.current.getScreenshot();
-      console.log(imageSrc);
-    },
-    [webcamRef]
-  );
+  const cam = useRef(null);
+  
   return (
-    <div className="App">
-        <Webcam
-        audio={false}
-        height={720}
-        ref={webcamRef}
-        screenshotFormat="image/jpeg"
-        width={1280}
-        videoConstraints={videoConstraints}
+    <Fragment>
+      <Camera
+        showFocus={true}
+        front={false}
+        capture={capture}
+        ref={cam}
+        width="80%%"
+        height="auto"
+        focusWidth="80%"
+        focusHeight="60%"
+        btnColor="white"
       />
-      <button onClick={capture}>Capture photo</button>
-    </div>
+      <button onClick={img => cam.current.capture(img)}>Take image</button>
+    </Fragment>
   );
 }
 
