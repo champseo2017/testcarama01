@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment, useRef } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Camera } from './lib';
