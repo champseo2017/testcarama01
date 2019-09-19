@@ -1,48 +1,31 @@
-import React, { Component } from 'react';
+import React from 'react';
+import logo from './logo.svg';
 import './App.css';
-import Camera, { FACING_MODES, IMAGE_TYPES } from 'react-html5-camera-photo';
-import 'react-html5-camera-photo/build/css/index.css';
+import Webcam from "react-webcam";
 
-class App extends Component {
-  onTakePhoto (dataUri) {
-    // Do stuff with the photo...
-    console.log('takePhoto');
-  }
+function App() {
+  const webcamRef = React.useRef(null);
  
-  onCameraError (error) {
-    console.error('onCameraError', error);
-  }
- 
-  onCameraStart (stream) {
-    console.log('onCameraStart');
-  }
- 
-  onCameraStop () {
-    console.log('onCameraStop');
-  }
- 
-  render () {
-    return (
-      <div className="App">
-        <Camera
-          onTakePhoto = { (dataUri) => { this.onTakePhoto(dataUri); } }
-          onCameraError = { (error) => { this.onCameraError(error); } }
-          idealFacingMode = {FACING_MODES.ENVIRONMENT}
-          idealResolution = {{width: 640, height: 480}}
-          imageType = {IMAGE_TYPES.JPG}
-          imageCompression = {0.97}
-          isMaxResolution = {false}
-          isImageMirror = {false}
-          isSilentMode = {true}
-          isDisplayStartCameraError = {true}
-          isFullscreen = {true}
-          sizeFactor = {1}
-          onCameraStart = { (stream) => { this.onCameraStart(stream); } }
-          onCameraStop = { () => { this.onCameraStop(); } }
-        />
-      </div>
-    );
-  }
+  const capture = React.useCallback(
+    () => {
+      const imageSrc = webcamRef.current.getScreenshot();
+      console.log(imageSrc);
+    },
+    [webcamRef]
+  );
+  return (
+    <div className="App">
+        <Webcam
+        audio={false}
+        height={720}
+        ref={webcamRef}
+        screenshotFormat="image/jpeg"
+        width={1280}
+        videoConstraints={videoConstraints}
+      />
+      <button onClick={capture}>Capture photo</button>
+    </div>
+  );
 }
- 
+
 export default App;
